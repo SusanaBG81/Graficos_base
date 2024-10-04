@@ -1,14 +1,32 @@
 ---
 title: "Graficos"
+subtitle: Curso PF-9053
 author: "Susana Briceno"
 format: html
 editor: visual
+toc: true
+theme: minty
+lang: es
+date: 03-oct-2024
+    
 ---
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+```
+
+
+<!-- formato word .docx -->
+<!-- formar ppt: .pptx -->
+<!-- para ocultar se coloca: #| echo: false -->
 
 ## Gráficos del sistema base de R
 ```{r}
+#| label: grafico de cars oculto
+#| code-fold: true
 plot(cars)
 ```
+
 ### Gráficos de barras de la distribución del número de partos
 ```{r}
 #Grafico de barras
@@ -58,3 +76,38 @@ You can add options to executable code like this
 ```
 
 The `echo: false` option disables the printing of code (only output is displayed).
+
+
+<!-- para usar funciones con conflicto se coloca dplyr:filter() stats:filter() -->
+<!-- los :: se usan opara llamar funciones de los paquetes especificos-->
+
+### Relacion entre la longitud de pico y masa del pinguino
+
+```{r}
+#| label: Gráfico de dispersión de longitud del pico vs masa (peso)
+penguins |>
+  ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
+  geom_point(size = 2) +
+  geom_smooth(method = "loess", se = FALSE) +
+  ggtitle("Longitud del pico vs. masa") +
+  xlab("Longitud del pico (mm)") +
+  ylab("Masa (g)") +
+  labs(color = "Especie", shape = "Especie")
+  
+```
+### Relacion entre la longitud de pico y masa del pinguino por especie
+
+```{r}
+penguins |>
+  ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species,
+                 shape = species),
+             size = 2) +
+  geom_smooth(method = "lm", se = FALSE, aes(color = species)) +
+  scale_color_manual(values = c("darkorange", "darkorchid", "cyan4")) +
+  ggtitle("Longitud del pico vs. masa por especie") +
+  xlab("Longitud del pico (mm)") +
+  ylab("Masa (g)") +
+  labs(color = "Especie", shape = "Especie")
+```
+
